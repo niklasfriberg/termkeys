@@ -1,0 +1,32 @@
+<idea-plugin>
+    <id>com.github.niklasfriberg.termkeys</id>
+    <name>TermKeys</name>
+    <vendor>niklasfriberg</vendor>
+
+    <description><![CDATA[
+        Override keystrokes inside the IntelliJ terminal, sending a byte sequence of your choice
+        to the shell.
+        <br/><br/>
+        The default override makes <b>Shift+Enter</b> insert a newline instead of submitting, so
+        multi-line input works in the Claude Code CLI without reaching for Ctrl+J. Add your own in
+        <b>Settings &gt; Tools &gt; TermKeys</b>: bind any key combo to a sequence with escapes
+        (<code>\n</code>, <code>\r</code>, <code>\e</code>, <code>\xHH</code>), for example
+        <code>\x1b[A</code> to send Up.
+        <br/><br/>
+        Overrides fire only while a terminal is focused; everything else passes through. Works with
+        both the classic and reworked (2025.x) terminal engines.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.terminal</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.github.niklasfriberg.termkeys.TermKeysStartup"/>
+        <applicationService serviceImplementation="com.github.niklasfriberg.termkeys.TermKeysSettings"/>
+        <applicationConfigurable
+                parentId="tools"
+                id="termkeys.settings"
+                displayName="TermKeys"
+                instance="com.github.niklasfriberg.termkeys.TermKeysConfigurable"/>
+    </extensions>
+</idea-plugin>
